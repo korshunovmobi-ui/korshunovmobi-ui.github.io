@@ -1,0 +1,16 @@
+{
+  "name": "Mobi Bro",
+  "short_name": "Mobi Bro",
+  "description": "Ремонт телефонов, ноутбуков и Nintendo Switch на Кропоткина 13А.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#2f6bff",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}
