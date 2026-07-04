@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mobi Bro CRM — демо</title>
+<meta name="description" content="Демонстрационная версия CRM для мастерской по ремонту: заказы, статусы, мастера, финансы. Данные вымышленные.">
+<style>
+  :root{
+    --bg:#f4f6fb; --surface:#ffffff; --ink:#0f172a; --dim:#64748b; --line:#e6e9f2;
+    --accent:#2563eb; --accent-soft:#eff4ff;
+    --g:#16a34a; --g-bg:#e7f6ec; --a:#d97706; --a-bg:#fdf2e3; --i:#4f46e5; --i-bg:#eeecfd;
+    --sans:-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5}
+  a{color:inherit}
+  .topbar{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .topbar-in{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
+  .logo{width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,var(--accent),#1e40af);color:#fff;display:grid;place-items:center;font-weight:800}
+  .demo-badge{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 9px;border-radius:999px}
+  .user{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;background:#dbe4f5;color:#334155;display:grid;place-items:center;font-weight:700;font-size:12px}
+  .back{font-size:13px;color:var(--accent);text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:22px 20px 60px}
+  .notice{background:#fffbeb;border:1px solid #f6e6b5;color:#8a6d1a;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:20px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .stat h3{margin:0;color:var(--dim);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .stat .v{font-size:26px;font-weight:800;margin-top:6px;font-variant-numeric:tabular-nums}
+  .stat .d{font-size:12px;color:var(--g);margin-top:2px}
+  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:start}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .card-h{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+  .card-h h2{margin:0;font-size:15px;font-weight:700}
+  .card-h span{font-size:12px;color:var(--dim)}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:11px 18px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--dim);font-weight:600;background:#fafbfe}
+  tr:last-child td{border-bottom:none}
+  td.num{font-weight:700;white-space:nowrap}
+  td.small{color:var(--dim);font-size:13px}
+  td.price{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .badge{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .b-gray{background:#eef1f6;color:#475569}.b-blue{background:var(--accent-soft);color:var(--accent)}
+  .b-amber{background:var(--a-bg);color:var(--a)}.b-indigo{background:var(--i-bg);color:var(--i)}
+  .b-green{background:var(--g-bg);color:var(--g)}
+  form{padding:18px}
+  .fld{margin-bottom:12px}
+  .fld label{display:block;font-size:12px;font-weight:600;color:var(--dim);margin-bottom:5px}
+  .fld input,.fld select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+  .fld input:focus,.fld select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{width:100%;background:var(--accent);color:#fff;border:none;padding:11px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;transition:background .15s}
+  .btn:hover{background:#1d4ed8}
+  .hint{font-size:12px;color:var(--dim);margin-top:9px;text-align:center}
+  footer{max-width:1120px;margin:0 auto;padding:18px 20px 40px;color:var(--dim);font-size:12px}
+  footer a{color:var(--accent);text-decoration:none}
+  @media (max-width:820px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .grid{grid-template-columns:1fr}
+    .hide-sm{display:none}
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-in">
+      <div class="brand"><span class="logo">M</span> Mobi Bro CRM <span class="demo-badge">демо</span></div>
+      <div class="user"><span class="hide-sm">Приёмка · Воронеж</span><span class="avatar">П</span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="notice">Это демонстрационная версия CRM для мастерской. Все данные вымышленные. Реальная система ведёт заказы, склад запчастей, финансы и историю статусов.</div>
+
+    <div class="stats">
+      <div class="stat"><h3>Заказов в работе</h3><div class="v" id="s-active">—</div><div class="d">актуально сейчас</div></div>
+      <div class="stat"><h3>Заказов за месяц</h3><div class="v">148</div><div class="d">+12% к прошлому</div></div>
+      <div class="stat"><h3>Выручка за месяц</h3><div class="v">387 200&nbsp;₽</div><div class="d">+8% к прошлому</div></div>
+      <div class="stat"><h3>Клиентов в базе</h3><div class="v">612</div><div class="d">+23 за неделю</div></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-h"><h2>Заказы</h2><span id="ord-count"></span></div>
+        <div style="overflow-x:auto">
+          <table id="orders">
+            <thead><tr><th>№</th><th>Клиент</th><th>Устройство</th><th class="hide-sm">Неисправность</th><th class="hide-sm">Мастер</th><th>Статус</th><th>Цена</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>Новый заказ</h2></div>
+        <form id="addForm">
+          <div class="row2">
+            <div class="fld"><label>Устройство</label>
+              <select name="type"><option>Телефон</option><option>Ноутбук</option><option>Nintendo Switch</option><option>Планшет</option></select>
+            </div>
+            <div class="fld"><label>Модель</label><input name="model" placeholder="iPhone 13" required></div>
+          </div>
+          <div class="fld"><label>Неисправность</label><input name="defect" placeholder="Разбит экран" required></div>
+          <div class="row2">
+            <div class="fld"><label>Клиент</label><input name="client" placeholder="Иван" required></div>
+            <div class="fld"><label>Телефон</label><input name="phone" placeholder="+7 900 000-00-00" required></div>
+          </div>
+          <div class="fld"><label>Стоимость, ₽</label><input name="price" type="number" placeholder="4500" min="0"></div>
+          <button class="btn" type="submit">Создать заказ</button>
+          <div class="hint">Демо-режим: заказ добавится в таблицу, но никуда не сохранится.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>Демо CRM · сделано Александром Коршуновым · <a href="https://korshunovmobi-ui.github.io/">на главную</a> · <a href="https://t.me/mobi_bro" target="_blank" rel="noopener">написать в Telegram</a></footer>
+
+  <script>
+    var STATUSES = {
+      'Принят':'b-gray','Диагностика':'b-blue','Согласование':'b-amber','В работе':'b-indigo','Готов':'b-green','Выдан':'b-gray'
+    };
+    var seed = [
+      {n:'РМ-1048', c:'Иван Соколов', p:'+7 950 xxx-xx-xx', d:'Телефон · iPhone 13', def:'Разбит экран', m:'Алексей', s:'В работе', pr:6900},
+      {n:'РМ-1047', c:'Марина Котова', p:'+7 952 xxx-xx-xx', d:'Ноутбук · Lenovo IdeaPad', def:'Чистка, замена термопасты', m:'Дмитрий', s:'Готов', pr:2500},
+      {n:'РМ-1046', c:'Сергей Панов', p:'+7 900 xxx-xx-xx', d:'Nintendo Switch OLED', def:'Не заряжается, разъём', m:'Алексей', s:'Согласование', pr:4200},
+      {n:'РМ-1045', c:'Ольга Титова', p:'+7 953 xxx-xx-xx', d:'Телефон · Samsung S22', def:'Замена АКБ', m:'Дмитрий', s:'Готов', pr:3300},
+      {n:'РМ-1044', c:'Андрей Жуков', p:'+7 951 xxx-xx-xx', d:'Телефон · Xiaomi Redmi', def:'Не включается', m:'—', s:'Диагностика', pr:0},
+      {n:'РМ-1043', c:'Наталья Ким', p:'+7 999 xxx-xx-xx', d:'Ноутбук · ASUS VivoBook', def:'Замена SSD, перенос данных', m:'Дмитрий', s:'В работе', pr:5800},
+      {n:'РМ-1042', c:'Пётр Власов', p:'+7 958 xxx-xx-xx', d:'Телефон · iPhone 12', def:'Замена стекла', m:'Алексей', s:'Выдан', pr:4500},
+      {n:'РМ-1041', c:'Юлия Роот', p:'+7 960 xxx-xx-xx', d:'Планшет · iPad', def:'Замена тачскрина', m:'—', s:'Принят', pr:0}
+    ];
+    var num = 1049;
+    function badge(s){ return '<span class="badge '+(STATUSES[s]||'b-gray')+'">'+s+'</span>'; }
+    function money(v){ return v>0 ? (v.toLocaleString('ru-RU')+' ₽') : '—'; }
+    function render(){
+      var tb = document.querySelector('#orders tbody');
+      tb.innerHTML = seed.map(function(o){
+        return '<tr><td class="num">'+o.n+'</td>'+
+          '<td>'+o.c+'<div class="small">'+o.p+'</div></td>'+
+          '<td>'+o.d+'</td>'+
+          '<td class="small hide-sm">'+o.def+'</td>'+
+          '<td class="small hide-sm">'+o.m+'</td>'+
+          '<td>'+badge(o.s)+'</td>'+
+          '<td class="price">'+money(o.pr)+'</td></tr>';
+      }).join('');
+      document.getElementById('ord-count').innerText = seed.length + ' заказов';
+      document.getElementById('s-active').innerText = seed.filter(function(o){return o.s!=='Выдан';}).length;
+    }
+    document.getElementById('addForm').onsubmit = function(e){
+      e.preventDefault();
+      var f = new FormData(this);
+      seed.unshift({ n:'РМ-'+(num++), c:f.get('client'), p:f.get('phone'),
+        d:f.get('type')+' · '+f.get('model'), def:f.get('defect'), m:'—', s:'Принят',
+        pr:parseInt(f.get('price')||'0',10) });
+      this.reset(); render();
+    };
+    render();
+  </script>
+</body>
+</html>
